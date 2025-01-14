@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/pksl-slp-ctrl/static/css/main.4c3dd9fb.css",
+    "main.js": "/pksl-slp-ctrl/static/js/main.823e2ccc.js",
+    "static/js/453.36aafce8.chunk.js": "/pksl-slp-ctrl/static/js/453.36aafce8.chunk.js",
+    "index.html": "/pksl-slp-ctrl/index.html",
+    "main.4c3dd9fb.css.map": "/pksl-slp-ctrl/static/css/main.4c3dd9fb.css.map",
+    "main.823e2ccc.js.map": "/pksl-slp-ctrl/static/js/main.823e2ccc.js.map",
+    "453.36aafce8.chunk.js.map": "/pksl-slp-ctrl/static/js/453.36aafce8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4c3dd9fb.css",
+    "static/js/main.823e2ccc.js"
+  ]
+}
