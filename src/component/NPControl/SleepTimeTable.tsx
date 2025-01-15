@@ -1,5 +1,5 @@
 import React from 'react';
-import {SleepTimeTableProps, TimeBlockProps, ISleepScore} from '../../types';
+import {SleepTimeTableProps, TimeBlockProps} from '../../types';
 
 const TimeBlock: React.FC<TimeBlockProps> = ({rangeStart, start, end, totalHour, color, height}) => {
   const s = (start[0] * 60 + start[1] - rangeStart[0] * 60 + 24 * 60) % 1440;
@@ -60,6 +60,20 @@ export const SleepTimeTable: React.FC<SleepTimeTableProps> = ({targetTime, sleep
           height={100}
         />
       </div>
+      <div aria-hidden="true" className="absolute h-[17px] inset-0 pointer-events-none">
+        {Array.from({length: totalHours + 1}, (_, i) => (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              left: `${(i / totalHours) * 100}%`,
+              top: 0,
+              bottom: 0,
+              borderLeft: '1px solid #ccc'
+            }}
+          />
+        ))}
+      </div>
       <div className="flex justify-between relative leading-none text-[10px]">
         {Array.from({length: totalHours + 1}, (_, i) => {
           const hour = (startHour + i) % 24;
@@ -77,20 +91,6 @@ export const SleepTimeTable: React.FC<SleepTimeTableProps> = ({targetTime, sleep
             </div>
           );
         })}
-      </div>
-      <div aria-hidden="true" className="absolute h-[20px] inset-0 pointer-events-none">
-        {Array.from({length: totalHours + 1}, (_, i) => (
-          <div
-            key={i}
-            style={{
-              position: 'absolute',
-              left: `${(i / totalHours) * 100}%`,
-              top: 0,
-              bottom: 0,
-              borderLeft: '1px solid #ccc'
-            }}
-          />
-        ))}
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+import {SelectChangeEvent} from '@mui/material';
+
 export interface iResult {
   date: [number, number, number];
   startTime: [number, number];
@@ -30,12 +32,20 @@ export interface NPControlInputProps {
   setTargetEnergy: (targetEnergy: number) => void;
   targetNP: number;
   setTargetNP: (targetNP: number) => void;
+  NPMultiplier: number;
+  handleNPMultiplier: (e: SelectChangeEvent<number>) => void;
+}
+
+export interface NPMultiplierSelectProps {
+  NPMultiplier: number;
+  handleNPMultiplier: (e: SelectChangeEvent<number>) => void;
 }
 
 export interface NPControlOutputProps {
   targetTime: [number, number];
   targetEnergy: number;
   targetNP: number;
+  NPMultiplier: number;
 }
 
 export interface SleepDataActionProps {

@@ -164,20 +164,29 @@ function Description() {
                 <li>XS以降のiPhoneを入手し、iOS 15以降をインストールする。</li>
                 <li>
                   <Link
-                    href="https://www.icloud.com/shortcuts/e1eb862652ee4a3c9650622fc587eb64"
+                    href="https://www.icloud.com/shortcuts/2cab72a0d303485cbe5f8138bc66684a"
                     underline="hover"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     このURL
                   </Link>
-                  からショートカットを入手し、背面タップやロック画面に配置する。
+                  からショートカットを入手し、背面タップやロック画面、またはコントロールセンターに配置する。
                 </li>
                 <li>
-                  ポケモンスリープを開き、睡眠データへ移動した画面を表示させる。このときに、注意点に書かれた要件を満たすようにする。
+                  ポケモンスリープを開き、睡眠データへ移動した画面を表示させる。このときに、注意点に書かれた要件を満たすようにする。また、
+                  <Link
+                    href="https://kite-hub.github.io/pksl-ing-mgmt-static/"
+                    underline="hover"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    食材管理ツール
+                  </Link>
+                  と使い方が若干異なる点に注意する。
                 </li>
                 <li>スクリーンショットを撮影し保存する。</li>
-                <li>ショートカットを実行し、テキスト入力へペーストする(複数画像の選択を推奨)。</li>
+                <li>ショートカットを実行し、テキスト入力へペーストする(複数画像の選択も可能)。</li>
               </ol>
               <br />
             </div>
@@ -202,8 +211,8 @@ function Description() {
               <hr className="mt-1 mb-2" />
               <div>
                 {'　'}
-                このツールでは、iPhoneの画像のライブテキスト機能を用いて食材数（現在）を更新します。ただし、文字が正しく読み取れない場合や、画像内に対応する食材名や食材数が存在しない場合、
-                <strong>食材数 (現在) は一部更新されない</strong>
+                このツールでは、iPhoneの画像のライブテキスト機能を用いて睡眠データを入力します。ただし、文字が正しく読み取れない場合や、必要な情報が存在しない場合、
+                <strong>睡眠データが入力されない</strong>
                 点にご注意ください。以下に例を示します。
               </div>
               <br />
@@ -215,7 +224,7 @@ function Description() {
                 className="mx-auto w-1/2"
               />
               <div className="text-center">
-                図1. 読み取り成功例 <small>(画像中の全ての食材が認識される)</small>
+                図1. 読み取り成功例 <small>(正しく睡眠データが入力される)</small>
               </div>
               <br />
               <img
@@ -226,7 +235,10 @@ function Description() {
                 className="mx-auto w-1/2"
               />
               <div className="text-center">
-                図2. 読み取り失敗例1 <small>(最下段の食材名が途切れているため認識されない)</small>
+                図2. 読み取り失敗例1 <br />
+                <small>
+                  (食材管理ツールと同一の方法で行ったとき、ショートカット通知が計測日の上に重なってしまい睡眠データが入力されない)
+                </small>
               </div>
               <br />
               <img
@@ -237,20 +249,21 @@ function Description() {
                 className="mx-auto w-1/2"
               />
               <div className="text-center">
-                図3. 読み取り失敗例2 <small>(最下段の食材数に対応する食材名が画像中に存在しないため認識されない)</small>
+                図3. 読み取り失敗例2 <br />
+                <small>(最下段の食材数に対応する食材名が画像中に存在しないため認識されない)</small>
               </div>
               <br />
-              <img
-                src={`${process.env.PUBLIC_URL}/DescriptionImages/NG3.jpg`}
-                alt="NG3"
-                width={750}
-                height={581}
-                className="mx-auto w-1/2"
-              />
-              <div className="text-center">
-                図4. 読み取り失敗例3 <small>(最上段の食材数が不鮮明なため認識されない)</small>
+              <div className="flex items-center">
+                <div className="w-1.5 h-6 bg-[#25d76b] mr-2"></div>
+                <h3 className="font-bold text-base">その他</h3>
               </div>
-              <br />
+              <hr className="mt-1 mb-2" />
+              <div>
+                ・実際の各睡眠タイプの%は詳細データの各睡眠タイプの時間の割合であるが、ゲーム内表記の値を入力しているので、過去30回のタイプ別平均%などに若干の誤差が生じる場合があります。
+              </div>
+              <div>
+                ・ローカルストレージにより睡眠データをブラウザ上に保持していますが、一定期間サイトを開かずにいるとローカルストレージのデータが削除される場合がありますので、定期的に睡眠データをクリップボードにコピーすることでバックアップしておくことを推奨します。
+              </div>
             </div>
           </DialogContent>
           <DialogActions>

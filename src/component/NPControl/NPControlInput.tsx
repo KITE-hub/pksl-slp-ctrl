@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {NPControlInputProps} from '../../types';
+import NPMultiplierSelect from './NPMultiplierSelect';
 
 function NPControlInput({
   targetTime,
@@ -7,7 +8,9 @@ function NPControlInput({
   targetEnergy,
   setTargetEnergy,
   targetNP,
-  setTargetNP
+  setTargetNP,
+  NPMultiplier,
+  handleNPMultiplier
 }: NPControlInputProps) {
   const handleEnergy = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
@@ -51,42 +54,44 @@ function NPControlInput({
   return (
     <div className="NPControl mt-3">
       <table className="mx-auto">
-        <tr className="h-10">
+        <tr>
           <th>
             <div className="bg-[#6aea4b] text-white rounded-full w-40 h-6 mr-3 flex items-center justify-center">
               計測開始時刻
             </div>
           </th>
-          <td className="flex">
-            <input
-              type="number"
-              value={targetTime[0]}
-              onChange={handleEnergy(0)}
-              className="font-bold px-2 focus:px-[7px] w-12 py-1 focus:py-[3px] box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
-            />
-            <p className="flex items-center mx-2">時</p>
-            <input
-              type="number"
-              value={targetTime[1]}
-              onChange={handleEnergy(1)}
-              className="font-bold px-2 focus:px-[7px] w-12 py-1 focus:py-[3px] box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
-            />
-            <p className="flex items-center mx-2">分</p>
+          <td className="block my-0.5">
+            <div className="flex">
+              <input
+                type="number"
+                value={targetTime[0]}
+                onChange={handleEnergy(0)}
+                className="font-bold px-2 focus:px-[7px] w-12 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
+              />
+              <p className="flex items-center mx-2">時</p>
+              <input
+                type="number"
+                value={targetTime[1]}
+                onChange={handleEnergy(1)}
+                className="font-bold px-2 focus:px-[7px] w-12 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
+              />
+              <p className="flex items-center mx-2">分</p>
+            </div>
           </td>
         </tr>
-        <tr className="h-14">
+        <tr>
           <th>
             <div className="bg-[#6aea4b] text-white rounded-full w-40 h-6 mr-3 flex items-center justify-center">
               現在のエナジー
             </div>
           </th>
-          <td className="py-1">
+          <td className="block my-0.5">
             <div className="flex">
               <input
                 type="number"
                 value={targetEnergyBase[0]}
                 onChange={handleInputChange(setTargetEnergyBase, 0)}
-                className="font-bold px-2 focus:px-[7px] w-16 py-1 focus:py-[3px] box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
+                className="font-bold px-2 focus:px-[7px] w-16 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
               />
               <p className="flex items-center mx-2">× 10</p>
               <sup>
@@ -98,22 +103,22 @@ function NPControlInput({
                 />
               </sup>
             </div>
-            <p className="flex items-center mx-1.5 text-sm">= {targetEnergy.toLocaleString()}</p>
+            <p className="mx-1.5 text-sm">= {targetEnergy.toLocaleString()}</p>
           </td>
         </tr>
-        <tr className="h-14">
+        <tr>
           <th>
             <div className="bg-[#6aea4b] text-white rounded-full w-40 h-6 mr-3 flex items-center justify-center">
               目標ねむけパワー
             </div>
           </th>
-          <td className="py-1">
+          <td className="block my-0.5">
             <div className="flex">
               <input
                 type="number"
                 value={targetNPBase[0]}
                 onChange={handleInputChange(setTargetNPBase, 0)}
-                className="font-bold px-2 focus:px-[7px] w-16 py-1 focus:py-[3px] box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
+                className="font-bold px-2 focus:px-[7px] w-16 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
               />
               <p className="flex items-center mx-2">× 10</p>
               <sup>
@@ -125,7 +130,17 @@ function NPControlInput({
                 />
               </sup>
             </div>
-            <p className="flex items-center mx-1.5 text-sm">= {targetNP.toLocaleString()}</p>
+            <p className="mx-1.5 text-sm">= {targetNP.toLocaleString()}</p>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <div className="bg-[#6aea4b] text-white rounded-full w-40 h-6 mr-3 flex items-center justify-center">
+              ねむけボーナス
+            </div>
+          </th>
+          <td className="block my-0.5">
+            <NPMultiplierSelect NPMultiplier={NPMultiplier} handleNPMultiplier={handleNPMultiplier} />
           </td>
         </tr>
       </table>

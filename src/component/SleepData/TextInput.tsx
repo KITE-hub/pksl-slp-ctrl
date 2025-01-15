@@ -43,27 +43,27 @@ const decodeResultsFromArray = (encoded: string): iResult[] => {
       !Array.isArray(item) ||
       item.length !== 5 ||
       !Array.isArray(item[0]) ||
-      item[0].length !== 3 || // [year, month, day]
+      item[0].length !== 3 ||
       item[0][0] < 0 ||
       item[0][1] < 0 ||
       item[0][1] > 12 ||
       item[0][2] < 0 ||
       item[0][2] > 31 ||
       !Array.isArray(item[1]) ||
-      item[1].length !== 2 || // [hour, minute]
+      item[1].length !== 2 ||
       item[1][0] < 0 ||
       item[1][0] > 26 ||
       item[1][1] >= 60 ||
       item[1][1] < 0 ||
       !Array.isArray(item[2]) ||
-      item[2].length !== 2 || // [hour, minute]
+      item[2].length !== 2 ||
       item[2][0] < 0 ||
       item[2][0] > 26 ||
       item[2][1] >= 60 ||
       item[2][1] < 0 ||
-      !['うとうと', 'すやすや', 'ぐっすり'].includes(item[3]) || // sleepType チェック
+      !['うとうと', 'すやすや', 'ぐっすり'].includes(item[3]) ||
       !Array.isArray(item[4]) ||
-      item[4].length !== 3 || // [number, number, number]
+      item[4].length !== 3 ||
       item[4][0] < 0 ||
       item[4][1] < 0 ||
       item[4][2] !== 100 - item[4][0] - item[4][1]
@@ -111,7 +111,7 @@ function TextInput({result, setResult}: InputProps) {
       if (newResults.length > 0) {
         const mergedResults = [...result, ...newResults];
         const sortedResults = mergedResults.sort((a, b) => {
-          const aDateTime = [...a.date, ...a.startTime]; // [year, month, day, hour, minute]
+          const aDateTime = [...a.date, ...a.startTime];
           const bDateTime = [...b.date, ...b.startTime];
           for (let i = 0; i < aDateTime.length; i++) {
             if (aDateTime[i] !== bDateTime[i]) return bDateTime[i] - aDateTime[i]; // 降順

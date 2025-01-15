@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef, useReducer, useCallback} from 'react
 import {iResult} from './types';
 import {styled} from '@mui/material/styles';
 import {Tabs, Tab} from '@mui/material';
+import {SelectChangeEvent} from '@mui/material';
 import TextInput from './component/SleepData/TextInput';
 import NPControlInput from './component/NPControl/NPControlInput';
 import Description from './component/Description';
@@ -12,7 +13,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SleepDataCopy from './component/SleepData/SleepDataCopy';
 import SleepDataStat from './component/SleepData/SleepDataStat';
 import SleepDataGrid from './component/SleepData/SleepDataGrid';
-import SleepScoreGrid from './component/NPControl/SleepScoreGrid';
+import NPControlOutput from './component/NPControl/NPControlOutput';
 
 interface State {
   tabIndex: number;
@@ -61,7 +62,10 @@ function App() {
   const [targetTime, setTargetTime] = useState<[number, number]>([22, 0]);
   const [targetEnergy, setTargetEnergy] = useState<number>(1000000);
   const [targetNP, setTargetNP] = useState<number>(100000000);
-
+  const [NPMultiplier, setNPMultiplier] = useState<number>(1.0);
+  const handleNPMultiplier = (e: SelectChangeEvent<number>) => {
+    setNPMultiplier(Number(e.target.value));
+  };
   const StyledTabs = styled(Tabs)(({selectedcolor}: {selectedcolor: string}) => ({
     minHeight: '36px',
     '& .MuiTabs-indicator': {
@@ -95,8 +99,8 @@ function App() {
         <div className="flex">
           <span className="bg-[#25d76b] w-1.5 mr-1.5"></span>
           <div className="flex text-white bg-[#25d76b] px-2 w-full items-end">
-            <h2 className="font-bold">テキスト入力</h2>
-            <small className="ml-1">(使い方必読)</small>
+            <h2 className="font-bold">入力欄</h2>
+            <small className="ml-1">(使い方,注意点必読)</small>
           </div>
         </div>
         <StyledTabs
@@ -118,6 +122,8 @@ function App() {
             setTargetEnergy={setTargetEnergy}
             targetNP={targetNP}
             setTargetNP={setTargetNP}
+            NPMultiplier={NPMultiplier}
+            handleNPMultiplier={handleNPMultiplier}
           />
         )}
       </div>
@@ -125,7 +131,7 @@ function App() {
         <div className="flex">
           <span className="bg-[#5dabfe] w-1.5 mr-1.5"></span>
           <div className="flex text-white bg-[#5dabfe] px-2 w-full items-center">
-            <h2 className="font-bold">睡眠データ</h2>
+            <h2 className="font-bold">出力欄</h2>
             <SleepDataCopy result={result} />
             <IconButton
               aria-label="actions"
@@ -164,7 +170,12 @@ function App() {
           <div className="mt-3">
             <Collapse in={isSleepDataGridOpen} timeout="auto" unmountOnExit>
               <div ref={inputRef}>
-                <SleepScoreGrid targetTime={targetTime} targetEnergy={targetEnergy} targetNP={targetNP} />
+                <NPControlOutput
+                  targetTime={targetTime}
+                  targetEnergy={targetEnergy}
+                  targetNP={targetNP}
+                  NPMultiplier={NPMultiplier}
+                />
               </div>
             </Collapse>
           </div>
