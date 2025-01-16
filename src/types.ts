@@ -1,6 +1,6 @@
 import {SelectChangeEvent} from '@mui/material';
 
-export interface iResult {
+export interface ISleepData {
   date: [number, number, number];
   startTime: [number, number];
   endTime: [number, number];
@@ -20,13 +20,12 @@ export interface ISleepScore {
   endTimeMax: [number, number];
 }
 
-export interface InputProps {
-  result: iResult[];
-  setResult: (result: iResult[]) => void;
+export interface SleepDataInputProps {
+  sleepData: ISleepData[];
+  setSleepData: (sleepData: ISleepData[]) => void;
 }
 
 export interface NPControlInputProps {
-  targetTime: [number, number];
   setTargetTime: React.Dispatch<React.SetStateAction<[number, number]>>;
   targetEnergy: number;
   setTargetEnergy: (targetEnergy: number) => void;
@@ -49,16 +48,16 @@ export interface NPControlOutputProps {
 }
 
 export interface SleepDataActionProps {
-  result: iResult[];
+  sleepData: ISleepData[];
 }
 
 export interface SleepDataStatProps {
-  result: iResult[];
+  sleepData: ISleepData[];
 }
 
 export interface SleepDataGridProps {
-  result: iResult[];
-  setResult: (result: iResult[]) => void;
+  sleepData: ISleepData[];
+  setSleepData: (sleepData: ISleepData[]) => void;
 }
 
 export interface SleepTimeTableProps {

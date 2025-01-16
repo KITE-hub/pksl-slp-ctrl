@@ -19,7 +19,7 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import {DescriptionTheme, StyledDialogTitle, StyledButton} from './MUIStyledComponents';
+import {theme, StyledDialogTitle, StyledButton} from './MUIStyledComponents';
 
 function Description() {
   const [moreMenuAnchor, setMoreMenuAnchor] = useState<HTMLElement | null>(null);
@@ -80,7 +80,7 @@ function Description() {
 
   return (
     <div className="Description ml-auto">
-      <ThemeProvider theme={DescriptionTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <IconButton size="small" aria-label="actions" sx={{color: 'white'}} onClick={moreButtonClick}>
           <MoreIcon />
@@ -250,7 +250,7 @@ function Description() {
               />
               <div className="text-center">
                 図3. 読み取り失敗例2 <br />
-                <small>(最下段の食材数に対応する食材名が画像中に存在しないため認識されない)</small>
+                <small>(必要な情報の一部が画像中に存在しないため睡眠データが入力されない)</small>
               </div>
               <br />
               <div className="flex items-center">
@@ -259,10 +259,10 @@ function Description() {
               </div>
               <hr className="mt-1 mb-2" />
               <div>
-                ・実際の各睡眠タイプの%は詳細データの各睡眠タイプの時間の割合であるが、ゲーム内表記の値を入力しているので、過去30回のタイプ別平均%などに若干の誤差が生じる場合があります。
+                ・各睡眠タイプの実際の割合は、詳細データに基づく各睡眠タイプの時間の割合に基づいています。ただし、ゲーム内表記の値を使用しているため、過去30回のタイプ別平均%などにわずかな誤差が生じる場合があります。{' '}
               </div>
               <div>
-                ・ローカルストレージにより睡眠データをブラウザ上に保持していますが、一定期間サイトを開かずにいるとローカルストレージのデータが削除される場合がありますので、定期的に睡眠データをクリップボードにコピーすることでバックアップしておくことを推奨します。
+                ・睡眠データはブラウザのローカルストレージに保存されていますが、一定期間サイトを利用しない場合、データが削除される可能性があります。そのため、定期的に睡眠データをクリップボードにコピーしてバックアップしておくことをお勧めします。{' '}
               </div>
             </div>
           </DialogContent>

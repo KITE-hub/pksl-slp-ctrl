@@ -1,16 +1,16 @@
 import {useState, useCallback} from 'react';
-import {SleepDataActionProps, iResult} from '../../types';
+import {SleepDataActionProps, ISleepData} from '../../types';
 import {ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import {IconButton, Snackbar} from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-import {DescriptionTheme} from '../MUIStyledComponents';
+import {theme} from '../MUIStyledComponents';
 
-function SleepDataCopy({result}: SleepDataActionProps) {
+function SleepDataCopy({sleepData}: SleepDataActionProps) {
   const [copiedMessageVisible, setCopiedMessageVisible] = useState<boolean>(false);
-  const formatResultsAsArray = (results: iResult[]): string => {
+  const formatSleepDataAsArray = (sleepData: ISleepData[]): string => {
     return JSON.stringify(
-      results.map(({date, startTime, endTime, sleepType, sleepRate}) => [
+      sleepData.map(({date, startTime, endTime, sleepType, sleepRate}) => [
         date,
         startTime,
         endTime,
@@ -25,20 +25,20 @@ function SleepDataCopy({result}: SleepDataActionProps) {
     }
   };
   const onCopy = useCallback(() => {
-    const formattedText = formatResultsAsArray(result);
+    const formattedText = formatSleepDataAsArray(sleepData);
     copyToClipboard(formattedText)
       .then(() => {
         setCopiedMessageVisible(true);
       })
       .catch(() => {});
-  }, [result]);
+  }, [sleepData]);
   const onCopiedMessageClose = useCallback(() => {
     setCopiedMessageVisible(false);
   }, [setCopiedMessageVisible]);
 
   return (
     <div className="SleepDataAction flex items-center ml-auto mr-1">
-      <ThemeProvider theme={DescriptionTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <IconButton aria-label="actions" sx={{color: 'white', width: '22px', height: '22px'}} onClick={onCopy}>
           <FileCopyIcon sx={{width: '15px', height: '15px'}} />

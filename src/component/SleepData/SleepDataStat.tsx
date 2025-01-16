@@ -1,25 +1,25 @@
 import {useState, useEffect} from 'react';
-import {SleepDataStatProps, iResult} from '../../types';
+import {SleepDataStatProps, ISleepData} from '../../types';
 
-function SleepDataStat({result}: SleepDataStatProps) {
+function SleepDataStat({sleepData}: SleepDataStatProps) {
   const [sleepRateStats, setSleepRateStats] = useState<{
     averages: [number, number, number];
     stdDevs: [number, number, number];
   }>(() => {
-    const savedData = localStorage.getItem('resultData');
+    const savedData = localStorage.getItem('sleepData');
     if (savedData) {
-      const initialResult: iResult[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
+      const initialSleepData: ISleepData[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
 
       const averages = [0, 1, 2].map((index) => {
-        const total = initialResult.reduce<number>((acc, item) => acc + (item.sleepRate[index] || 0), 0);
-        return total / initialResult.length;
+        const total = initialSleepData.reduce<number>((acc, item) => acc + (item.sleepRate[index] || 0), 0);
+        return total / initialSleepData.length;
       }) as [number, number, number];
       const stdDevs = [0, 1, 2].map((index) => {
         const variance =
-          initialResult.reduce<number>(
+          initialSleepData.reduce<number>(
             (acc, item) => acc + Math.pow((item.sleepRate[index] || 0) - averages[index], 2),
             0
-          ) / initialResult.length;
+          ) / initialSleepData.length;
         return Math.sqrt(variance);
       }) as [number, number, number];
 
@@ -29,34 +29,37 @@ function SleepDataStat({result}: SleepDataStatProps) {
   });
 
   const [startTimeAvarage, setStartTimeAvarage] = useState<[number, number]>(() => {
-    const savedData = localStorage.getItem('resultData');
+    const savedData = localStorage.getItem('SleepData');
     if (savedData) {
-      const initialResult: iResult[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
-      const totalMinutes = initialResult.reduce((acc, item) => acc + (item.startTime[0] * 60 + item.startTime[1]), 0);
-      const hourAverage = Math.floor(totalMinutes / initialResult.length / 60);
-      const minuteAverage = totalMinutes / initialResult.length - hourAverage * 60;
+      const initialSleepData: ISleepData[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
+      const totalMinutes = initialSleepData.reduce(
+        (acc, item) => acc + (item.startTime[0] * 60 + item.startTime[1]),
+        0
+      );
+      const hourAverage = Math.floor(totalMinutes / initialSleepData.length / 60);
+      const minuteAverage = totalMinutes / initialSleepData.length - hourAverage * 60;
       return [hourAverage, minuteAverage];
     }
     return [0, 0];
   });
 
   const [endTimeAvarage, setEndTimeAvarage] = useState<[number, number]>(() => {
-    const savedData = localStorage.getItem('resultData');
+    const savedData = localStorage.getItem('SleepData');
     if (savedData) {
-      const initialResult: iResult[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
-      const totalMinutes = initialResult.reduce((acc, item) => acc + (item.endTime[0] * 60 + item.endTime[1]), 0);
-      const hourAverage = Math.floor(totalMinutes / initialResult.length / 60);
-      const minuteAverage = totalMinutes / initialResult.length - hourAverage * 60;
+      const initialSleepData: ISleepData[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
+      const totalMinutes = initialSleepData.reduce((acc, item) => acc + (item.endTime[0] * 60 + item.endTime[1]), 0);
+      const hourAverage = Math.floor(totalMinutes / initialSleepData.length / 60);
+      const minuteAverage = totalMinutes / initialSleepData.length - hourAverage * 60;
       return [hourAverage, minuteAverage];
     }
     return [0, 0];
   });
 
   const [sleepTimeAvarage, setSleepTimeAvarage] = useState<[number, number]>(() => {
-    const savedData = localStorage.getItem('resultData');
+    const savedData = localStorage.getItem('SleepData');
     if (savedData) {
-      const initialResult: iResult[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
-      const totalMinutes = initialResult.reduce(
+      const initialSleepData: ISleepData[] = JSON.parse(savedData).slice(0, 30); // 最初の30要素
+      const totalMinutes = initialSleepData.reduce(
         (acc, item) =>
           acc +
           ((((((item.endTime[0] - item.startTime[0]) * 60) % 1440) + 1440) % 1440) +
@@ -64,42 +67,42 @@ function SleepDataStat({result}: SleepDataStatProps) {
             item.startTime[1]),
         0
       );
-      const hourAverage = Math.floor(totalMinutes / initialResult.length / 60);
-      const minuteAverage = totalMinutes / initialResult.length - hourAverage * 60;
+      const hourAverage = Math.floor(totalMinutes / initialSleepData.length / 60);
+      const minuteAverage = totalMinutes / initialSleepData.length - hourAverage * 60;
       return [hourAverage, minuteAverage];
     }
     return [0, 0];
   });
 
   useEffect(() => {
-    if (result.length > 0) {
-      const initialResult = result.slice(0, 30); // 最初の30要素
+    if (sleepData.length > 0) {
+      const initialSleepData = sleepData.slice(0, 30); // 最初の30要素
       const averages = [0, 1, 2].map((index) => {
-        const total = initialResult.reduce((acc, item) => acc + (item.sleepRate[index] || 0), 0);
-        return total / initialResult.length;
+        const total = initialSleepData.reduce((acc, item) => acc + (item.sleepRate[index] || 0), 0);
+        return total / initialSleepData.length;
       }) as [number, number, number];
       const stdDevs = [0, 1, 2].map((index) => {
         const variance =
-          initialResult.reduce<number>(
+          initialSleepData.reduce<number>(
             (acc, item) => acc + Math.pow((item.sleepRate[index] || 0) - averages[index], 2),
             0
-          ) / initialResult.length;
+          ) / initialSleepData.length;
         return Math.sqrt(variance);
       }) as [number, number, number];
 
-      const startTimeTotalMinutes = initialResult.reduce(
+      const startTimeTotalMinutes = initialSleepData.reduce(
         (acc, item) => acc + (item.startTime[0] * 60 + item.startTime[1]),
         0
       );
-      const startTimeHourAverage = Math.floor(startTimeTotalMinutes / initialResult.length / 60);
-      const startTimeMinuteAverage = startTimeTotalMinutes / initialResult.length - startTimeHourAverage * 60;
-      const endTimeTotalMinutes = initialResult.reduce(
+      const startTimeHourAverage = Math.floor(startTimeTotalMinutes / initialSleepData.length / 60);
+      const startTimeMinuteAverage = startTimeTotalMinutes / initialSleepData.length - startTimeHourAverage * 60;
+      const endTimeTotalMinutes = initialSleepData.reduce(
         (acc, item) => acc + (item.endTime[0] * 60 + item.endTime[1]),
         0
       );
-      const endTimeHourAverage = Math.floor(endTimeTotalMinutes / initialResult.length / 60);
-      const endTimeMinuteAverage = endTimeTotalMinutes / initialResult.length - endTimeHourAverage * 60;
-      const sleepTimeTotalMinutes = initialResult.reduce(
+      const endTimeHourAverage = Math.floor(endTimeTotalMinutes / initialSleepData.length / 60);
+      const endTimeMinuteAverage = endTimeTotalMinutes / initialSleepData.length - endTimeHourAverage * 60;
+      const sleepTimeTotalMinutes = initialSleepData.reduce(
         (acc, item) =>
           acc +
           ((((((item.endTime[0] - item.startTime[0]) * 60) % 1440) + 1440) % 1440) +
@@ -107,14 +110,14 @@ function SleepDataStat({result}: SleepDataStatProps) {
             item.startTime[1]),
         0
       );
-      const sleepTimeHourAverage = Math.floor(sleepTimeTotalMinutes / initialResult.length / 60);
-      const sleepTimeMinuteAverage = sleepTimeTotalMinutes / initialResult.length - sleepTimeHourAverage * 60;
+      const sleepTimeHourAverage = Math.floor(sleepTimeTotalMinutes / initialSleepData.length / 60);
+      const sleepTimeMinuteAverage = sleepTimeTotalMinutes / initialSleepData.length - sleepTimeHourAverage * 60;
       setSleepRateStats({averages, stdDevs});
       setStartTimeAvarage([startTimeHourAverage, startTimeMinuteAverage]);
       setEndTimeAvarage([endTimeHourAverage, endTimeMinuteAverage]);
       setSleepTimeAvarage([sleepTimeHourAverage, sleepTimeMinuteAverage]);
     }
-  }, [result]);
+  }, [sleepData]);
   return (
     <div className="SleepDataStat flex justify-center w-[360px] mx-auto">
       <div className="mb-3 mr-2 flex flex-col items-center">

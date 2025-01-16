@@ -9,13 +9,13 @@ const formatTime = (timeArray: number[]) => {
   return `${hours}:${minutes}`;
 };
 
-function SleepDataGrid({result, setResult}: SleepDataGridProps) {
+function SleepDataGrid({sleepData, setSleepData}: SleepDataGridProps) {
   const handleDeleteClick = (index: number) => {
-    const updatedResult = result.filter((_, i) => i !== index);
-    setResult(updatedResult);
+    const updatedSleepData = sleepData.filter((_, i) => i !== index);
+    setSleepData(updatedSleepData);
   };
 
-  const rows: GridRowsProp = result.map((item, index) => ({
+  const rows: GridRowsProp = sleepData.map((item, index) => ({
     id: index,
     ...item
   }));

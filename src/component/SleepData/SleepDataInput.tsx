@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import {InputProps} from '../../types';
+import {SleepDataInputProps} from '../../types';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {IconButton} from '@mui/material';
 import {StyledTextInputField} from '../MUIStyledComponents';
-import {iResult} from '../../types';
+import {ISleepData} from '../../types';
 
-const parseSleepData = (text: string): iResult | null => {
+const parseSleepData = (text: string): ISleepData | null => {
   const dateMatch = text.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
   if (!dateMatch) return null;
   const [year, month, day]: number[] = dateMatch.slice(1).map(Number);
@@ -24,16 +24,16 @@ const parseSleepData = (text: string): iResult | null => {
   if (sleepRate.length != 3) return null;
   if (sleepRate[2] !== 100 - sleepRate[0] - sleepRate[1]) return null;
 
-  const parsedResult: iResult = {
+  const parsedSleepData: ISleepData = {
     date: [year, month, day],
     startTime: [startHour, startMinute],
     endTime: [endHour, endMinute],
     sleepType,
     sleepRate: sleepRate as [number, number, number]
   };
-  return parsedResult;
+  return parsedSleepData;
 };
-const decodeResultsFromArray = (encoded: string): iResult[] => {
+const decodeSleepDataFromArray = (encoded: string): ISleepData[] => {
   const parsedArray = JSON.parse(encoded) as unknown;
   if (!Array.isArray(parsedArray)) {
     throw new Error();
@@ -81,7 +81,7 @@ const decodeResultsFromArray = (encoded: string): iResult[] => {
   });
 };
 
-function TextInput({result, setResult}: InputProps) {
+function SleepDataInput({sleepData, setSleepData}: SleepDataInputProps) {
   const [inputValue, setInputValue] = useState<string>('');
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
@@ -101,16 +101,16 @@ function TextInput({result, setResult}: InputProps) {
         .map((part) => part.trim())
         .filter((part) => part);
 
-      const newResults: iResult[] = [];
-      const errorResults: string[] = [];
+      const newSleepData: ISleepData[] = [];
+      const errorSleepData: string[] = [];
       for (const part of parts) {
-        const parsedResult = parseSleepData(part);
-        if (parsedResult) newResults.push(parsedResult);
-        else errorResults.push(part);
+        const parsedSleepData = parseSleepData(part);
+        if (parsedSleepData) newSleepData.push(parsedSleepData);
+        else errorSleepData.push(part);
       }
-      if (newResults.length > 0) {
-        const mergedResults = [...result, ...newResults];
-        const sortedResults = mergedResults.sort((a, b) => {
+      if (newSleepData.length > 0) {
+        const mergedSleepData = [...sleepData, ...sleepData];
+        const sortedSleepData = mergedSleepData.sort((a, b) => {
           const aDateTime = [...a.date, ...a.startTime];
           const bDateTime = [...b.date, ...b.startTime];
           for (let i = 0; i < aDateTime.length; i++) {
@@ -118,11 +118,11 @@ function TextInput({result, setResult}: InputProps) {
           }
           return 0;
         });
-        setResult(sortedResults);
+        setSleepData(sortedSleepData);
         setInputValue('');
       }
-      if (errorResults) {
-        alert(`以下のデータが解析できませんでした:\n${errorResults}`);
+      if (errorSleepData) {
+        alert(`以下のデータが解析できませんでした:\n${errorSleepData}`);
       }
     } finally {
       setAdditionOrder(false);
@@ -134,10 +134,10 @@ function TextInput({result, setResult}: InputProps) {
     setImportOrder(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 300));
-      const decodedResults = decodeResultsFromArray(inputValue);
-      if (decodedResults.length > 0) {
-        const mergedResults = [...result, ...decodedResults];
-        const sortedResults = mergedResults.sort((a, b) => {
+      const decodedSleepData = decodeSleepDataFromArray(inputValue);
+      if (decodedSleepData.length > 0) {
+        const mergedSleepData = [...sleepData, ...decodedSleepData];
+        const sortedSleepData = mergedSleepData.sort((a, b) => {
           const aDateTime = [...a.date, ...a.startTime];
           const bDateTime = [...b.date, ...b.startTime];
           for (let i = 0; i < aDateTime.length; i++) {
@@ -145,7 +145,7 @@ function TextInput({result, setResult}: InputProps) {
           }
           return 0;
         });
-        setResult(sortedResults);
+        setSleepData(sortedSleepData);
         setInputValue('');
       }
     } catch (error) {
@@ -199,4 +199,4 @@ function TextInput({result, setResult}: InputProps) {
   );
 }
 
-export default TextInput;
+export default SleepDataInput;

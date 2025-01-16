@@ -3,7 +3,6 @@ import {NPControlInputProps} from '../../types';
 import NPMultiplierSelect from './NPMultiplierSelect';
 
 function NPControlInput({
-  targetTime,
   setTargetTime,
   targetEnergy,
   setTargetEnergy,
@@ -12,43 +11,79 @@ function NPControlInput({
   NPMultiplier,
   handleNPMultiplier
 }: NPControlInputProps) {
-  const handleEnergy = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10);
-    if (!isNaN(value)) {
-      setTargetTime((prev): [number, number] => {
+  const handleInputChange =
+    (setter: React.Dispatch<React.SetStateAction<[number | null, number | null]>>, index: number) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value === '' ? null : parseInt(e.target.value, 10);
+      setter((prev) => {
         const updated = [...prev];
         updated[index] = value;
-        if ((index === 1 && updated[1] >= 60) || (index === 0 && updated[0] >= 24)) {
-          const minute = updated[0] * 60 + updated[1];
-          updated[0] = Math.floor(minute / 60) % 24;
-          updated[1] = minute % 60;
-        }
-        return updated as [number, number];
+        return updated as [number | null, number | null];
       });
-    }
-  };
-  const handleInputChange =
-    (setter: React.Dispatch<React.SetStateAction<[number, number]>>, index: number) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = parseInt(e.target.value, 10);
-      if (!isNaN(value)) {
-        setter((prev) => {
-          const updated = [...prev];
-          updated[index] = value;
-          return updated as [number, number];
-        });
-      }
     };
 
-  const [targetEnergyBase, setTargetEnergyBase] = useState<[number, number]>([100, 4]);
+  const [targetTimeBase, setTargetTimeBase] = useState<[number | null, number | null]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('targetTimeBase');
+      return saved ? JSON.parse(saved) : [22, 0];
+    }
+    return [22, 0];
+  });
   useEffect(() => {
-    const expandedValue = Math.round(targetEnergyBase[0] * Math.pow(10, targetEnergyBase[1]) * 100) / 100;
-    setTargetEnergy(expandedValue);
+    localStorage.setItem('targetTimeBase', JSON.stringify(targetTimeBase));
+    const expandedValue = (() => {
+      const [hour, minute] = targetTimeBase;
+      if (hour !== null && minute !== null) {
+        const timeToMinute = hour * 60 + minute;
+        return [Math.floor(timeToMinute / 60) % 24, timeToMinute % 60] as [number, number];
+      }
+      return null;
+    })();
+    if (expandedValue !== null) {
+      setTargetTime(expandedValue);
+    }
+  }, [targetTimeBase]);
+
+  const [targetEnergyBase, setTargetEnergyBase] = useState<[number | null, number | null]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('targetEnergyBase');
+      return saved ? JSON.parse(saved) : [100, 4];
+    }
+    return [100, 4];
+  });
+  useEffect(() => {
+    localStorage.setItem('targetEnergyBase', JSON.stringify(targetEnergyBase));
+    const expandedValue = (() => {
+      const [base, exponent] = targetEnergyBase;
+      if (base !== null && exponent !== null) {
+        return Math.min(Math.pow(10, 12), Math.round(base * Math.pow(10, exponent) * 100) / 100);
+      }
+      return null;
+    })();
+    if (expandedValue !== null) {
+      setTargetEnergy(expandedValue);
+    }
   }, [targetEnergyBase]);
-  const [targetNPBase, setTargetNPBase] = useState<[number, number]>([100, 6]);
+
+  const [targetNPBase, setTargetNPBase] = useState<[number | null, number | null]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('targetNPBase');
+      return saved ? JSON.parse(saved) : [100, 6];
+    }
+    return [100, 6];
+  });
   useEffect(() => {
-    const expandedValue = Math.round(targetNPBase[0] * Math.pow(10, targetNPBase[1]) * 100) / 100;
-    setTargetNP(expandedValue);
+    localStorage.setItem('targetNPBase', JSON.stringify(targetNPBase));
+    const expandedValue = (() => {
+      const [base, exponent] = targetNPBase;
+      if (base !== null && exponent !== null) {
+        return Math.min(Math.pow(10, 12), Math.round(base * Math.pow(10, exponent) * 100) / 100);
+      }
+      return null;
+    })();
+    if (expandedValue !== null) {
+      setTargetNP(expandedValue);
+    }
   }, [targetNPBase]);
 
   return (
@@ -64,15 +99,15 @@ function NPControlInput({
             <div className="flex">
               <input
                 type="number"
-                value={targetTime[0]}
-                onChange={handleEnergy(0)}
+                value={targetTimeBase[0] ?? ''}
+                onChange={handleInputChange(setTargetTimeBase, 0)}
                 className="font-bold px-2 focus:px-[7px] w-12 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
               />
               <p className="flex items-center mx-2">時</p>
               <input
                 type="number"
-                value={targetTime[1]}
-                onChange={handleEnergy(1)}
+                value={targetTimeBase[1] ?? ''}
+                onChange={handleInputChange(setTargetTimeBase, 1)}
                 className="font-bold px-2 focus:px-[7px] w-12 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
               />
               <p className="flex items-center mx-2">分</p>
@@ -89,7 +124,7 @@ function NPControlInput({
             <div className="flex">
               <input
                 type="number"
-                value={targetEnergyBase[0]}
+                value={targetEnergyBase[0] ?? ''}
                 onChange={handleInputChange(setTargetEnergyBase, 0)}
                 className="font-bold px-2 focus:px-[7px] w-16 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
               />
@@ -97,7 +132,7 @@ function NPControlInput({
               <sup>
                 <input
                   type="number"
-                  value={targetEnergyBase[1]}
+                  value={targetEnergyBase[1] ?? ''}
                   onChange={handleInputChange(setTargetEnergyBase, 1)}
                   className="font-bold px-1 focus:px-[3px] pb-1 focus:pb-[3px] w-8 box-border relative top-1.5 rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
                 />
@@ -116,7 +151,7 @@ function NPControlInput({
             <div className="flex">
               <input
                 type="number"
-                value={targetNPBase[0]}
+                value={targetNPBase[0] ?? ''}
                 onChange={handleInputChange(setTargetNPBase, 0)}
                 className="font-bold px-2 focus:px-[7px] w-16 h-8 box-border rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
               />
@@ -124,7 +159,7 @@ function NPControlInput({
               <sup>
                 <input
                   type="number"
-                  value={targetNPBase[1]}
+                  value={targetNPBase[1] ?? ''}
                   onChange={handleInputChange(setTargetNPBase, 1)}
                   className="font-bold px-1 focus:px-[3px] pb-1 focus:pb-[3px] w-8 box-border relative top-1.5 rounded-md border border-[#25d76b] buttonShadow focus:outline-none focus:border-2 focus:border-[#25d76b]"
                 />

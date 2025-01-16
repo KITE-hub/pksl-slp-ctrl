@@ -14,30 +14,32 @@ function NPControlOutput({targetTime, targetEnergy, targetNP, NPMultiplier}: NPC
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const newSleepScores: ISleepScore[] = [];
-    const startMinute = targetTime[0] * 60 + targetTime[1];
-    let minNPDiff: number = Infinity;
-    let minNPDiffIndex: number = -1;
-    for (let sleepScore = 17; sleepScore <= 100; sleepScore++) {
-      const sleepTimeMin = Math.max(0, Math.ceil(((sleepScore - 0.5) / 100) * 8.5 * 60));
-      const sleepTimeMax = Math.min(510, Math.ceil(((sleepScore + 0.5) / 100) * 8.5 * 60 - 1));
-      const NP = sleepScore * targetEnergy * NPMultiplier;
-      if (Math.abs(NP - targetNP) < minNPDiff) {
-        minNPDiff = Math.abs(NP - targetNP);
-        minNPDiffIndex = sleepScore - 17;
+    if (targetTime[0] !== null && targetTime[1] !== null) {
+      const newSleepScores: ISleepScore[] = [];
+      const startMinute = targetTime[0] * 60 + targetTime[1];
+      let minNPDiff: number = Infinity;
+      let minNPDiffIndex: number = -1;
+      for (let sleepScore = 17; sleepScore <= 100; sleepScore++) {
+        const sleepTimeMin = Math.max(0, Math.ceil(((sleepScore - 0.5) / 100) * 8.5 * 60));
+        const sleepTimeMax = Math.min(510, Math.ceil(((sleepScore + 0.5) / 100) * 8.5 * 60 - 1));
+        const NP = sleepScore * targetEnergy * NPMultiplier;
+        if (Math.abs(NP - targetNP) < minNPDiff) {
+          minNPDiff = Math.abs(NP - targetNP);
+          minNPDiffIndex = sleepScore - 17;
+        }
+        newSleepScores.push({
+          sleepScore: sleepScore,
+          NP: NP,
+          vibStartTime: minuteToTime(startMinute + 15),
+          vibEndTimeMin: minuteToTime(startMinute + sleepTimeMin),
+          vibEndTimeMax: minuteToTime(startMinute + sleepTimeMax),
+          endTimeMin: minuteToTime(startMinute + 5 + sleepTimeMin),
+          endTimeMax: minuteToTime(startMinute + 5 + sleepTimeMax)
+        });
       }
-      newSleepScores.push({
-        sleepScore: sleepScore,
-        NP: NP,
-        vibStartTime: minuteToTime(startMinute + 15),
-        vibEndTimeMin: minuteToTime(startMinute + sleepTimeMin),
-        vibEndTimeMax: minuteToTime(startMinute + sleepTimeMax),
-        endTimeMin: minuteToTime(startMinute + 5 + sleepTimeMin),
-        endTimeMax: minuteToTime(startMinute + 5 + sleepTimeMax)
-      });
+      setSleepScores(newSleepScores);
+      setCurrentIndex(minNPDiffIndex);
     }
-    setSleepScores(newSleepScores);
-    setCurrentIndex(minNPDiffIndex);
   }, [targetTime, targetEnergy, targetNP, NPMultiplier]);
 
   useEffect(() => {

@@ -1,7 +1,14 @@
 import {TextField, Button, DialogTitle} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import {styled} from '@mui/material/styles';
 import {createTheme} from '@mui/material/styles';
+
+export const theme = createTheme({
+  typography: {
+    fontFamily:
+      // eslint-disable-next-line
+      "'M PLUS 1p','Noto Sans JP', 'Helvetica Neue', 'Helvetica', 'Hiragino Sans', 'Arial', 'Yu Gothic', 'Meiryo', sans-serif"
+  }
+});
 
 // TextInput.tsx
 
@@ -33,14 +40,6 @@ export const StyledTextInputField = styled(TextField)({
 
 // Description.tsx
 
-export const DescriptionTheme = createTheme({
-  typography: {
-    fontFamily:
-      // eslint-disable-next-line
-      "'M PLUS 1p','Noto Sans JP', 'Helvetica Neue', 'Helvetica', 'Hiragino Sans', 'Arial', 'Yu Gothic', 'Meiryo', sans-serif",
-    fontSize: 14
-  }
-});
 export const StyledDialogTitle = styled(DialogTitle)({
   fontSize: '20px',
   fontWeight: 'bold',
@@ -51,7 +50,6 @@ export const StyledTextField = styled(TextField)({
     borderRadius: '8px',
     boxShadow: '0px 2px 0px 0px rgba(0, 0, 0, .1)',
     backgroundColor: 'white',
-    // padding: '8px 10px',
     width: '100%',
     fontSize: '16px',
     fontWeight: 'normal',
