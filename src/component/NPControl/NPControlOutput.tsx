@@ -85,7 +85,7 @@ function NPControlOutput({targetTime, targetEnergy, targetNP, NPMultiplier}: NPC
           <div
             key={index}
             className="flex justify-between items-center mb-0.5"
-            style={{backgroundColor: index === currentIndex ? 'white' : undefined}}
+            style={{backgroundColor: index === currentIndex ? '#e3ebf3' : undefined}}
             ref={(el) => (itemRefs.current[index] = el)}
           >
             <div className="flex flex-col h-16 w-28 justify-center items-center">
@@ -125,7 +125,7 @@ function NPControlOutput({targetTime, targetEnergy, targetNP, NPMultiplier}: NPC
                   <span className="text-[#42d77b]">
                     <span className="text-[11px]">振動開始:</span> <strong>{timeDisplay(item.vibStartTime)}</strong>
                   </span>
-                  <span className="text-[#f6b74c]">
+                  <span className="text-[#f4a825]">
                     <span className="text-[11px]">振動終了:</span> <strong>{timeDisplay(item.vibEndTimeMin)}</strong> -{' '}
                     <strong>{timeDisplay(item.vibEndTimeMax)}</strong>
                   </span>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useReducer, useCallback} from 'react';
+import React, {useState, useRef, useReducer, useCallback} from 'react';
 import {ISleepData} from './types';
 import {styled} from '@mui/material/styles';
 import {ThemeProvider} from '@mui/material/styles';
@@ -16,6 +16,7 @@ import SleepDataStat from './component/SleepData/SleepDataStat';
 import SleepDataGrid from './component/SleepData/SleepDataGrid';
 import NPControlOutput from './component/NPControl/NPControlOutput';
 import {theme} from './component/MUIStyledComponents';
+import {useLocalStorageState} from './component/UseLocalStorageState';
 
 interface State {
   tabIndex: number;
@@ -35,64 +36,20 @@ const reducer = (state: State, action: Action): State => {
 };
 
 function App() {
-  const [sleepData, setSleepData] = useState<ISleepData[]>(() => {
-    const savedData = localStorage.getItem('resultData');
-    return savedData ? JSON.parse(savedData) : [];
-  });
-  useEffect(() => {
-    localStorage.setItem('result', JSON.stringify(sleepData));
-  }, [sleepData]);
+  const [sleepData, setSleepData] = useLocalStorageState<ISleepData[]>('sleepData', []);
 
-  const [isSleepDataGridOpen, setIsSleepDataGridOpen] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const storedIsInputOpen = localStorage.getItem('isSleepDataGridOpen');
-      return storedIsInputOpen ? JSON.parse(storedIsInputOpen) : true;
-    }
-    return true;
-  });
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('isSleepDataGridOpen', JSON.stringify(isSleepDataGridOpen));
-    }
-  }, [isSleepDataGridOpen]);
+  const [isSleepDataGridOpen, setIsSleepDataGridOpen] = useLocalStorageState<boolean>('isSleepDataGridOpen', true);
 
   const inputRef = useRef<HTMLDivElement | null>(null);
   const toggleSleepDataGrid = () => {
     setIsSleepDataGridOpen(!isSleepDataGridOpen);
   };
 
-  const [targetTime, setTargetTime] = useState<[number, number]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('targetTime');
-      return saved ? JSON.parse(saved) : [22, 0];
-    }
-    return [22, 0];
-  });
-  useEffect(() => {
-    localStorage.setItem('targetTime', JSON.stringify(targetTime));
-  }, [targetTime]);
+  const [targetTime, setTargetTime] = useLocalStorageState<[number, number]>('targetTime', [22, 0]);
 
-  const [targetEnergy, setTargetEnergy] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('targetEnergy');
-      return saved ? Number(saved) : 1000000;
-    }
-    return 1000000;
-  });
-  useEffect(() => {
-    localStorage.setItem('targetEnergy', targetEnergy.toString());
-  }, [targetEnergy]);
+  const [targetEnergy, setTargetEnergy] = useLocalStorageState<number>('targetEnergy', 1000000);
 
-  const [targetNP, setTargetNP] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('targetNP');
-      return saved ? Number(saved) : 1000000;
-    }
-    return 100000000;
-  });
-  useEffect(() => {
-    localStorage.setItem('targetNP', targetNP.toString());
-  }, [targetNP]);
+  const [targetNP, setTargetNP] = useLocalStorageState<number>('targetNP', 100000000);
 
   const [NPMultiplier, setNPMultiplier] = useState(1);
   const handleNPMultiplier = (e: SelectChangeEvent<number>) => {
@@ -144,11 +101,10 @@ function App() {
             variant="scrollable"
             scrollButtons="auto"
           >
-            <StyledTab selectedcolor={selectedcolor} label="睡眠データ入力" />
             <StyledTab selectedcolor={selectedcolor} label="睡眠計測" />
+            <StyledTab selectedcolor={selectedcolor} label="睡眠データ入力" />
           </StyledTabs>
-          {state.tabIndex === 0 && <SleepDataInput sleepData={sleepData} setSleepData={setSleepData} />}
-          {state.tabIndex === 1 && (
+          {state.tabIndex === 0 && (
             <NPControlInput
               setTargetTime={setTargetTime}
               targetEnergy={targetEnergy}
@@ -159,6 +115,7 @@ function App() {
               handleNPMultiplier={handleNPMultiplier}
             />
           )}
+          {state.tabIndex === 1 && <SleepDataInput sleepData={sleepData} setSleepData={setSleepData} />}
         </div>
         <div className="SleepData w-[360px] mx-auto mt-4 mb-6 flex flex-col flex-grow-0">
           <div className="flex">
@@ -186,20 +143,10 @@ function App() {
             variant="scrollable"
             scrollButtons="auto"
           >
-            <StyledTab selectedcolor={selectedcolor} label="睡眠データ" />
             <StyledTab selectedcolor={selectedcolor} label="ねむけパワー調整" />
+            <StyledTab selectedcolor={selectedcolor} label="睡眠データ" />
           </StyledTabs>
           {state.tabIndex === 0 && (
-            <div className="mt-3">
-              <SleepDataStat sleepData={sleepData} />
-              <Collapse in={isSleepDataGridOpen} timeout="auto" unmountOnExit>
-                <div ref={inputRef}>
-                  <SleepDataGrid sleepData={sleepData} setSleepData={setSleepData} />
-                </div>
-              </Collapse>
-            </div>
-          )}
-          {state.tabIndex === 1 && (
             <div className="mt-3">
               <Collapse in={isSleepDataGridOpen} timeout="auto" unmountOnExit>
                 <div ref={inputRef}>
@@ -209,6 +156,16 @@ function App() {
                     targetNP={targetNP}
                     NPMultiplier={NPMultiplier}
                   />
+                </div>
+              </Collapse>
+            </div>
+          )}
+          {state.tabIndex === 1 && (
+            <div className="mt-3">
+              <SleepDataStat sleepData={sleepData} />
+              <Collapse in={isSleepDataGridOpen} timeout="auto" unmountOnExit>
+                <div ref={inputRef}>
+                  <SleepDataGrid sleepData={sleepData} setSleepData={setSleepData} />
                 </div>
               </Collapse>
             </div>

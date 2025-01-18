@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {NPControlInputProps} from '../../types';
 import FieldNameSelect from './FieldNameSelect';
 import NPMultiplierSelect from './NPMultiplierSelect';
@@ -8,6 +8,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import {IconButton} from '@mui/material';
 import {SelectChangeEvent} from '@mui/material';
 import fieldPokeNumberNP from '../../db/fieldPokeNumberNP.json';
+import {useLocalStorageState} from '../UseLocalStorageState';
 
 function NPControlInput({
   setTargetTime,
@@ -29,15 +30,11 @@ function NPControlInput({
       });
     };
 
-  const [targetTimeBase, setTargetTimeBase] = useState<[number | null, number | null]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('targetTimeBase');
-      return saved ? JSON.parse(saved) : [22, 0];
-    }
-    return [22, 0];
-  });
+  const [targetTimeBase, setTargetTimeBase] = useLocalStorageState<[number | null, number | null]>(
+    'targetTimeBase',
+    [22, 0]
+  );
   useEffect(() => {
-    localStorage.setItem('targetTimeBase', JSON.stringify(targetTimeBase));
     const expandedValue = (() => {
       const [hour, minute] = targetTimeBase;
       if (hour !== null && minute !== null) {
@@ -58,15 +55,11 @@ function NPControlInput({
     setTargetTime([hour, minute]);
   };
 
-  const [targetEnergyBase, setTargetEnergyBase] = useState<[number | null, number | null]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('targetEnergyBase');
-      return saved ? JSON.parse(saved) : [100, 4];
-    }
-    return [100, 4];
-  });
+  const [targetEnergyBase, setTargetEnergyBase] = useLocalStorageState<[number | null, number | null]>(
+    'targetEnergyBase',
+    [100, 4]
+  );
   useEffect(() => {
-    localStorage.setItem('targetEnergyBase', JSON.stringify(targetEnergyBase));
     const expandedValue = (() => {
       const [base, exponent] = targetEnergyBase;
       if (base !== null && exponent !== null) {
@@ -79,55 +72,21 @@ function NPControlInput({
     }
   }, [targetEnergyBase]);
 
-  const [targetNPBase, setTargetNPBase] = useState<[number | null, number | null]>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('targetNPBase');
-      return saved ? JSON.parse(saved) : [100, 6];
-    }
-    return [100, 6];
-  });
-  useEffect(() => {
-    localStorage.setItem('targetNPBase', JSON.stringify(targetNPBase));
-  }, [targetNPBase]);
-
-  const [fieldNumber, setFieldNumber] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('fieldNumber');
-      return saved ? Number(saved) : 5;
-    }
-    return 5;
-  });
-  useEffect(() => {
-    localStorage.setItem('fieldNumber', fieldNumber.toString());
-  }, [fieldNumber]);
+  const [targetNPBase, setTargetNPBase] = useLocalStorageState<[number | null, number | null]>(
+    'targetNPBase',
+    [100, 6]
+  );
+  const [fieldNumber, setFieldNumber] = useLocalStorageState<number>('fieldNumber', 5);
   const handleFieldNumber = (e: SelectChangeEvent<number>) => {
     setFieldNumber(Number(e.target.value));
   };
 
-  const [isPokeNumberMode, setIsPokeNumberMode] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('isPokeNumberMode');
-      return saved ? JSON.parse(saved) : true;
-    }
-    return true;
-  });
-  useEffect(() => {
-    localStorage.setItem('isPokeNumberMode', JSON.stringify(isPokeNumberMode));
-  }, [isPokeNumberMode]);
+  const [isPokeNumberMode, setIsPokeNumberMode] = useLocalStorageState<boolean>('isPokeNumberMode', true);
   const handleIsPokeNumberMode = () => {
     setIsPokeNumberMode((prevMode) => !prevMode);
   };
 
-  const [pokeNumber, setPokeNumber] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('pokeNumber');
-      return saved ? Number(saved) : 8;
-    }
-    return 8;
-  });
-  useEffect(() => {
-    localStorage.setItem('pokeNumber', JSON.stringify(pokeNumber));
-  }, [pokeNumber]);
+  const [pokeNumber, setPokeNumber] = useLocalStorageState<number>('pokeNumber', 8);
   const handlePokeNumber = (e: SelectChangeEvent<number>) => {
     setPokeNumber(Number(e.target.value));
   };

@@ -48,7 +48,7 @@ export const SleepTimeTable: React.FC<SleepTimeTableProps> = ({targetTime, sleep
           start={sleepScore.vibEndTimeMin}
           end={sleepScore.vibEndTimeMax}
           totalHour={totalHours}
-          color="#f6b74c"
+          color="#f4a825"
           height={70}
         />
         <TimeBlock
