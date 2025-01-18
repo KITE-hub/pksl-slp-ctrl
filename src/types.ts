@@ -4,7 +4,7 @@ export interface ISleepData {
   date: [number, number, number];
   startTime: [number, number];
   endTime: [number, number];
-  sleepType: 'うとうと' | 'すやすや' | 'ぐっすり';
+  sleepType: 'うとうと' | 'すやすや' | 'ぐっすり' | 'とくちょうなし';
   // Dozing=うとうと sleepRate[0], Snoozing=すやすや sleepRate[1], Slumbering=ぐっすり sleepRate[2]
   sleepRate: [number, number, number];
 }
@@ -35,9 +35,19 @@ export interface NPControlInputProps {
   handleNPMultiplier: (e: SelectChangeEvent<number>) => void;
 }
 
+export interface FieldNameSelectProps {
+  fieldNumber: number;
+  handleFieldNumber: (e: SelectChangeEvent<number>) => void;
+}
+
 export interface NPMultiplierSelectProps {
   NPMultiplier: number;
   handleNPMultiplier: (e: SelectChangeEvent<number>) => void;
+}
+
+export interface PokeNumberSelectProps {
+  pokeNumber: number;
+  handlePokeNumber: (e: SelectChangeEvent<number>) => void;
 }
 
 export interface NPControlOutputProps {

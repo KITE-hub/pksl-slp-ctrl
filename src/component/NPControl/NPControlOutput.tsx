@@ -85,7 +85,7 @@ function NPControlOutput({targetTime, targetEnergy, targetNP, NPMultiplier}: NPC
           <div
             key={index}
             className="flex justify-between items-center mb-0.5"
-            style={{backgroundColor: index === currentIndex ? '#f8fafc' : undefined}}
+            style={{backgroundColor: index === currentIndex ? 'white' : undefined}}
             ref={(el) => (itemRefs.current[index] = el)}
           >
             <div className="flex flex-col h-16 w-28 justify-center items-center">

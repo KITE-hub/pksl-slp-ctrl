@@ -125,11 +125,24 @@ function SleepDataGrid({sleepData, setSleepData}: SleepDataGridProps) {
               </div>
             </div>
           );
-        } else {
+        } else if (params.row.sleepType === 'ぐっすり') {
           return (
             <div className="flex flex-col h-full w-24 justify-center items-start">
               <span className="text-white bg-[#4488fb] rounded-full py-0.5 px-3 leading-snug text-center">
                 ぐっすり
+              </span>
+              <div className="flex leading-snug mt-1">
+                <span className="text-[#976a1c] mr-1">{params.row.sleepRate[0]}%</span>-
+                <span className="text-[#1b8198] mx-1">{params.row.sleepRate[1]}%</span>-
+                <span className="text-[#173e82] ml-1">{params.row.sleepRate[2]}%</span>
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-col h-full w-24 justify-center items-start">
+              <span className="text-white bg-[#bbbbbb] rounded-full py-0.5 px-3 leading-snug text-center">
+                とくちょうなし
               </span>
               <div className="flex leading-snug mt-1">
                 <span className="text-[#976a1c] mr-1">{params.row.sleepRate[0]}%</span>-

@@ -1,5 +1,5 @@
 import React from 'react';
-import {NPMultiplierSelectProps} from '../../types';
+import {PokeNumberSelectProps} from '../../types';
 import {styled, createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import {MenuItem, FormControl, InputLabel, Select, OutlinedInput} from '@mui/material';
@@ -18,7 +18,7 @@ const theme = createTheme({
 const StyledOutlinedInput = styled(OutlinedInput)(({theme}) => ({
   backgroundColor: 'white',
   height: '32px',
-  width: '90px',
+  width: '70px',
   padding: '0px 0px 0px 10px',
   margin: '1px 0px',
   borderRadius: '8px',
@@ -66,7 +66,7 @@ const StyledMenuItem = styled(MenuItem)(({theme}) => ({
   }
 }));
 
-const NPMultiplierSelect: React.FC<NPMultiplierSelectProps> = ({NPMultiplier, handleNPMultiplier}) => {
+const PokeNumberSelect: React.FC<PokeNumberSelectProps> = ({pokeNumber, handlePokeNumber}) => {
   return (
     <div className="NPMultiplierSelect">
       <ThemeProvider theme={theme}>
@@ -76,17 +76,17 @@ const NPMultiplierSelect: React.FC<NPMultiplierSelectProps> = ({NPMultiplier, ha
           <Select
             labelId="custom-select-label"
             id="custom-select"
-            value={NPMultiplier}
-            onChange={(e) => handleNPMultiplier(e)}
+            value={pokeNumber}
+            onChange={(e) => handlePokeNumber(e)}
             input={<StyledOutlinedInput />}
             MenuProps={menuProps}
           >
-            <StyledMenuItem value={1}>なし</StyledMenuItem>
-            <StyledMenuItem value={1.5}>× 1.5</StyledMenuItem>
-            <StyledMenuItem value={2}>× 2</StyledMenuItem>
-            <StyledMenuItem value={2.5}>× 2.5</StyledMenuItem>
-            <StyledMenuItem value={3}>× 3</StyledMenuItem>
-            <StyledMenuItem value={4}>× 4</StyledMenuItem>
+            <StyledMenuItem value={3}>3</StyledMenuItem>
+            <StyledMenuItem value={4}>4</StyledMenuItem>
+            <StyledMenuItem value={5}>5</StyledMenuItem>
+            <StyledMenuItem value={6}>6</StyledMenuItem>
+            <StyledMenuItem value={7}>7</StyledMenuItem>
+            <StyledMenuItem value={8}>8</StyledMenuItem>
           </Select>
         </FormControl>
       </ThemeProvider>
@@ -94,4 +94,4 @@ const NPMultiplierSelect: React.FC<NPMultiplierSelectProps> = ({NPMultiplier, ha
   );
 };
 
-export default NPMultiplierSelect;
+export default PokeNumberSelect;

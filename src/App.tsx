@@ -94,28 +94,19 @@ function App() {
     localStorage.setItem('targetNP', targetNP.toString());
   }, [targetNP]);
 
-  const [NPMultiplier, setNPMultiplier] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('NPMultiplier');
-      return saved ? Number(saved) : 1000000;
-    }
-    return 1;
-  });
-  useEffect(() => {
-    localStorage.setItem('NPMultiplier', NPMultiplier.toString());
-  }, [NPMultiplier]);
+  const [NPMultiplier, setNPMultiplier] = useState(1);
   const handleNPMultiplier = (e: SelectChangeEvent<number>) => {
     setNPMultiplier(Number(e.target.value));
   };
 
   const StyledTabs = styled(Tabs)(({selectedcolor}: {selectedcolor: string}) => ({
-    minHeight: '36px',
+    minHeight: '34px',
     '& .MuiTabs-indicator': {
       backgroundColor: selectedcolor // 選択中の下のバーの色を変更
     }
   }));
   const StyledTab = styled(Tab)<{selectedcolor: string}>(({selectedcolor}) => ({
-    minHeight: '36px',
+    minHeight: '34px',
     padding: '6px 6px',
     flex: 1,
     fontSize: '14px',

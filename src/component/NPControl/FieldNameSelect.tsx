@@ -1,5 +1,5 @@
 import React from 'react';
-import {NPMultiplierSelectProps} from '../../types';
+import {FieldNameSelectProps} from '../../types';
 import {styled, createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import {MenuItem, FormControl, InputLabel, Select, OutlinedInput} from '@mui/material';
@@ -18,7 +18,7 @@ const theme = createTheme({
 const StyledOutlinedInput = styled(OutlinedInput)(({theme}) => ({
   backgroundColor: 'white',
   height: '32px',
-  width: '90px',
+  width: '180px',
   padding: '0px 0px 0px 10px',
   margin: '1px 0px',
   borderRadius: '8px',
@@ -66,9 +66,9 @@ const StyledMenuItem = styled(MenuItem)(({theme}) => ({
   }
 }));
 
-const NPMultiplierSelect: React.FC<NPMultiplierSelectProps> = ({NPMultiplier, handleNPMultiplier}) => {
+const FieldNameSelect: React.FC<FieldNameSelectProps> = ({fieldNumber, handleFieldNumber}) => {
   return (
-    <div className="NPMultiplierSelect">
+    <div className="FieldNameSelect">
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <FormControl fullWidth>
@@ -76,17 +76,17 @@ const NPMultiplierSelect: React.FC<NPMultiplierSelectProps> = ({NPMultiplier, ha
           <Select
             labelId="custom-select-label"
             id="custom-select"
-            value={NPMultiplier}
-            onChange={(e) => handleNPMultiplier(e)}
+            value={fieldNumber}
+            onChange={(e) => handleFieldNumber(e)}
             input={<StyledOutlinedInput />}
             MenuProps={menuProps}
           >
-            <StyledMenuItem value={1}>なし</StyledMenuItem>
-            <StyledMenuItem value={1.5}>× 1.5</StyledMenuItem>
-            <StyledMenuItem value={2}>× 2</StyledMenuItem>
-            <StyledMenuItem value={2.5}>× 2.5</StyledMenuItem>
-            <StyledMenuItem value={3}>× 3</StyledMenuItem>
-            <StyledMenuItem value={4}>× 4</StyledMenuItem>
+            <StyledMenuItem value={0}>ワカクサ本島</StyledMenuItem>
+            <StyledMenuItem value={1}>シアンの砂浜</StyledMenuItem>
+            <StyledMenuItem value={2}>トープ洞窟</StyledMenuItem>
+            <StyledMenuItem value={3}>ウノハナ雪原</StyledMenuItem>
+            <StyledMenuItem value={4}>ラピスラズリ湖畔</StyledMenuItem>
+            <StyledMenuItem value={5}>ゴールド旧発電所</StyledMenuItem>
           </Select>
         </FormControl>
       </ThemeProvider>
@@ -94,4 +94,4 @@ const NPMultiplierSelect: React.FC<NPMultiplierSelectProps> = ({NPMultiplier, ha
   );
 };
 
-export default NPMultiplierSelect;
+export default FieldNameSelect;

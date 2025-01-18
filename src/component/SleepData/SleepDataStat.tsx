@@ -118,6 +118,7 @@ function SleepDataStat({sleepData}: SleepDataStatProps) {
       setSleepTimeAvarage([sleepTimeHourAverage, sleepTimeMinuteAverage]);
     }
   }, [sleepData]);
+
   return (
     <div className="SleepDataStat flex justify-center w-[360px] mx-auto">
       <div className="mb-3 mr-2 flex flex-col items-center">
@@ -126,9 +127,11 @@ function SleepDataStat({sleepData}: SleepDataStatProps) {
           {sleepTimeAvarage[0]}時間{sleepTimeAvarage[1].toFixed()}分
         </span>
         <span className="text-sm mt-1">
-          就寝: {startTimeAvarage[0]}:{startTimeAvarage[1].toFixed()}
+          就寝: {startTimeAvarage[0].toString().padStart(2, '0')}:
+          {startTimeAvarage[1].toFixed().toString().padStart(2, '0')}
           <br />
-          起床: {endTimeAvarage[0]}:{endTimeAvarage[1].toFixed()}
+          起床: {endTimeAvarage[0].toString().padStart(2, '0')}:
+          {endTimeAvarage[1].toFixed().toString().padStart(2, '0')}
         </span>
       </div>
       <div className="mb-4 ml-2 flex flex-col items-center">

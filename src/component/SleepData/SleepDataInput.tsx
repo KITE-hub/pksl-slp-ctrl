@@ -14,9 +14,9 @@ const parseSleepData = (text: string): ISleepData | null => {
   if (!timeMatch) return null;
   const [startHour, startMinute, endHour, endMinute]: number[] = timeMatch.slice(1).map(Number);
 
-  const sleepTypeMatch = text.match(/(うとうと|すやすや|ぐっすり)タイプ/);
+  const sleepTypeMatch = text.match(/(うとうと|すやすや|ぐっすり|とくちょうなし)タイプ/);
   if (!sleepTypeMatch) return null;
-  const sleepType = sleepTypeMatch[1] as 'うとうと' | 'すやすや' | 'ぐっすり';
+  const sleepType = sleepTypeMatch[1] as 'うとうと' | 'すやすや' | 'ぐっすり' | 'とくちょうなし';
 
   const regex = /：\s*(\d+)%/g;
   const matches = text.matchAll(regex);
@@ -61,7 +61,7 @@ const decodeSleepDataFromArray = (encoded: string): ISleepData[] => {
       item[2][0] > 26 ||
       item[2][1] >= 60 ||
       item[2][1] < 0 ||
-      !['うとうと', 'すやすや', 'ぐっすり'].includes(item[3]) ||
+      !['うとうと', 'すやすや', 'ぐっすり', 'とくちょうなし'].includes(item[3]) ||
       !Array.isArray(item[4]) ||
       item[4].length !== 3 ||
       item[4][0] < 0 ||
@@ -75,7 +75,7 @@ const decodeSleepDataFromArray = (encoded: string): ISleepData[] => {
       date: item[0] as [number, number, number],
       startTime: item[1] as [number, number],
       endTime: item[2] as [number, number],
-      sleepType: item[3] as 'うとうと' | 'すやすや' | 'ぐっすり',
+      sleepType: item[3] as 'うとうと' | 'すやすや' | 'ぐっすり' | 'とくちょうなし',
       sleepRate: item[4] as [number, number, number]
     };
   });
@@ -109,7 +109,7 @@ function SleepDataInput({sleepData, setSleepData}: SleepDataInputProps) {
         else errorSleepData.push(part);
       }
       if (newSleepData.length > 0) {
-        const mergedSleepData = [...sleepData, ...sleepData];
+        const mergedSleepData = [...sleepData, ...newSleepData];
         const sortedSleepData = mergedSleepData.sort((a, b) => {
           const aDateTime = [...a.date, ...a.startTime];
           const bDateTime = [...b.date, ...b.startTime];
@@ -121,8 +121,8 @@ function SleepDataInput({sleepData, setSleepData}: SleepDataInputProps) {
         setSleepData(sortedSleepData);
         setInputValue('');
       }
-      if (errorSleepData) {
-        alert(`以下のデータが解析できませんでした:\n${errorSleepData}`);
+      if (errorSleepData.length > 0) {
+        alert(`以下のデータが解析できませんでした:\n${errorSleepData.join('\n')}`);
       }
     } finally {
       setAdditionOrder(false);
