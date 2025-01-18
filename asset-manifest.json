@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/pksl-slp-ctrl/static/css/main.0bafd72c.css",
-    "main.js": "/pksl-slp-ctrl/static/js/main.13870f45.js",
+    "main.css": "/pksl-slp-ctrl/static/css/main.2f220add.css",
+    "main.js": "/pksl-slp-ctrl/static/js/main.d0053d1e.js",
     "static/js/453.36aafce8.chunk.js": "/pksl-slp-ctrl/static/js/453.36aafce8.chunk.js",
     "index.html": "/pksl-slp-ctrl/index.html",
-    "main.0bafd72c.css.map": "/pksl-slp-ctrl/static/css/main.0bafd72c.css.map",
-    "main.13870f45.js.map": "/pksl-slp-ctrl/static/js/main.13870f45.js.map",
+    "main.2f220add.css.map": "/pksl-slp-ctrl/static/css/main.2f220add.css.map",
+    "main.d0053d1e.js.map": "/pksl-slp-ctrl/static/js/main.d0053d1e.js.map",
     "453.36aafce8.chunk.js.map": "/pksl-slp-ctrl/static/js/453.36aafce8.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0bafd72c.css",
-    "static/js/main.13870f45.js"
+    "static/css/main.2f220add.css",
+    "static/js/main.d0053d1e.js"
   ]
 }
